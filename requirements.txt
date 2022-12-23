@@ -1,0 +1,9 @@
+ipython
+numpy
+matplotlib
+pandas
+scipy
+sklearn
+statsmodels
+git+https://github.com/hengenlab/neuraltoolkit.git
+git+https://github.com/hengenlab/musclebeachtools_hlab.git

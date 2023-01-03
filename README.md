@@ -7,8 +7,7 @@
 
 Jams you will return to again and again...
 
-A set of tools for analyzing neural data that has
-been processed with musclebeachtools.  Also included
+A set of tools for analyzing neural data after use of musclebeachtools.  Also included
 are utility functions for various steps in analysis
 of chronic neural and behavioral data.
 

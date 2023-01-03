@@ -517,6 +517,8 @@ def curve_function(x, a, b, c):
 
 def calc_dim_from_curve(curvedat,maxval,target=0.95):
     #how many dimensions needed to reach 95% max regression performance
+    
+    from scipy.optimize import curve_fit
 
     components = np.arange(curvedat.shape[0])
     y = curvedat/maxval

@@ -9,6 +9,7 @@ Email: sbrunwa@wustl.edu
 Version:  0.1
 '''
 
+import glob
 import numpy as np
 import pandas as pd
 import musclebeachtools as mbt

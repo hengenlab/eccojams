@@ -625,6 +625,31 @@ def spiketrain_from_firingrate_1d(frarray, binsize):
     spiketimes = np.concatenate(listofspikes + np.arange(len(frarray))) * binsize
     return(spiketimes)
 
+def generate_random_spikes(nspikes, tspan = 15, poisson_prob=1):
+    '''
+    nspikes - int - number of spikes to generate
+    tspan - int - length of time series (in seconds)
+    poisson_prob - 0,1 - if 1, will only include spikes passing poisson threshold
+    '''
+    randspikes = np.sort(np.random.uniform(0,tspan,nspikes))
+    if poisson_prob==1:
+        #add poisson probability
+        prob_of_spike = np.random.poisson(size=nspikes)
+        randspikes = randspikes[prob_of_spike>0]
+    return(randspikes)
+
+def shuffle_spikes(spiketrain, jitter_size, bootstraps=1):
+    '''
+    spiketrain - np.array - array of spiketimes in s
+    jitter_size - int - size of jitter in ms
+    bootstraps - int - number of times to shuffle
+    '''
+    jitter_sec = jitter_size/1e3
+    jitter_boot = np.random.uniform(-jitter_sec,jitter_sec,[bootstraps,np.shape(spiketrain)[0]])
+    jitter = np.sum(jitter_boot,axis=0)
+    shuffled = spiketrain + jitter
+    return(shuffled)
+
 
 ################    VIDEO/SLEEP/EVENT FUNCTIONS    ################
 
@@ -1000,6 +1025,25 @@ def ccg_tseries(stimes1,stimes2,dt=1e-3,tspan=0.05,nsegs=3000,return_plot=True,r
     if return_ccg == True:
         return(Y)
 
+def lagged_pwc(X,Y,tspan):
+    # Performs pairwise correlation over +/-tspan lags
+    # X - time series 1
+    # Y - time series 2
+    # tspan - timespan to compute PWC over (in units of X and Y bins)
+    
+    shiftvals = np.arange(-tspan,tspan+1)
+    pwc = np.zeros(len(shiftvals))
+
+    for i,shiftval in enumerate(shiftvals):
+
+        #timeshift
+        Y_shift = np.hstack([Y[shiftval:],Y[:shiftval]])
+
+        #perform correlation
+        pwc[i] = np.corrcoef(X,Y_shift)[0,1]
+
+    return(pwc)
+
 def cca_on_data(X,Y):
     '''
     Standardizes X and Y data, returns first CC of X and Y
@@ -1018,7 +1062,7 @@ def cca_on_data(X,Y):
 
     return(X_c,Y_c)
 
-def pca_on_data(data,scaling=0):
+def pca_on_data(data,scaling=0, whiten=0):
     '''
     Performs PCA on N x T matrix
     Returns PCA-transformed data and array of explained variance ratio
@@ -1027,7 +1071,10 @@ def pca_on_data(data,scaling=0):
 
     if scaling==0:
 
-        pca = PCA()
+        if whiten == 1:
+            pca = PCA(whiten=True)
+        else:
+            pca = PCA()
         # pca = PCA()
         pca.fit(data.T)
         data_transformed = pca.transform(data.T)

@@ -804,6 +804,39 @@ def riptimes_by_state(riptimes,sleepdf,state_of_interest):
     rdf_state = pd.concat(rdfstatelist)
     return(rdf_state)
 
+def eventtimes_by_state(eventtimes, sleepdf, state_of_interest):
+    '''
+    Inputs:
+    eventtimes - np.array, list, or pd.Series - 1d list/array of event times to be split by state
+    sleepdf - pd.DataFrame - dataframe of sleep states (as returned by eco.return_sleep_scores)
+    state_of_interest - str - name of state to split eventtimes by e.g. 'nrem'
+
+    Outputs:
+    events_state - pd.Series - contains event times occurring within state of interest only
+
+    '''
+
+    eventtimes = pd.Series(eventtimes)
+    state_of_interest = state_of_interest.lower()
+
+    if state_of_interest == 'active':
+        stateid = 1
+    elif state_of_interest == 'nrem':
+        stateid = 2
+    elif state_of_interest == 'rem':
+        stateid = 3
+    elif state_of_interest == 'quiet':
+        stateid = 5
+    else:
+        print(f'State "{state_of_interest}" not recognized')
+    statestart = sleepdf[sleepdf.sleepstate==stateid].start_time
+    statestop = sleepdf[sleepdf.sleepstate==stateid].stop_time
+    eventstatelist = [eventtimes[(eventtimes>start) & (eventtimes < stop)] for start,stop in zip(statestart.values,statestop.values)]
+    events_state = pd.concat(eventstatelist)
+
+    return(events_state)
+
+
 def get_peth_data(rippledir,wtlist,applist,state,region,celltype):
     
     wt_files = []

@@ -37,17 +37,18 @@ Open powershell/terminal
 ```
 
 ## What's new?
-'''
+```
+1-27-23:
 Now can select any event times by sleep state (not just ripples).
 Example usage:
 
-import numpy as np
-import eccojams as eco
+    import numpy as np
+    import eccojams as eco
 
-sleepdir = '/media/HlabShare/Sleep_Scoring/CAF00077/02022021/'
+    sleepdir = '/media/HlabShare/Sleep_Scoring/CAF00077/02022021/'
 
-events = np.random.uniform(0,24*3600,1000)
-sleepdf = eco.return_sleep_scores(sleepdir + 'CAF77_consensus.npy')
+    events = np.random.uniform(0,24*3600,1000)
+    sleepdf = eco.return_sleep_scores(sleepdir + 'CAF77_consensus.npy')
 
-eco.eventtimes_by_state(events, sleepdf, 'nrem')
-'''
+    eco.eventtimes_by_state(events, sleepdf, 'nrem')
+```

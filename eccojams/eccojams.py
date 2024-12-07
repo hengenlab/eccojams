@@ -228,7 +228,7 @@ def check_wfs(nrnlist):
     neurons = np.array(nrnlist)
     nrncount = neurons.shape[0]
 
-    nrows = np.int(np.ceil(nrncount/3))
+    nrows = int(np.ceil(nrncount/3))
     fig,ax = plt.subplots(nrows,3,figsize=(3*nrows,7),sharex=True)
     ax = ax.ravel()
 
@@ -256,7 +256,7 @@ def check_isi(nrnlist):
     neurons = np.array(nrnlist)
     nrncount = neurons.shape[0]
 
-    nrows = np.int(np.ceil(nrncount/3))
+    nrows = int(np.ceil(nrncount/3))
     fig,ax = plt.subplots(nrows,3,figsize=(3*nrows,7),sharex=True)
     ax = ax.ravel()
 
@@ -321,7 +321,7 @@ def check_continuity(nrnlist,starttime=0,endtime=12*3600,binsize=3600,fs = 25000
     # endtime = np.ceil(reclength)*3600
     # # endtime = 3*3600
 
-    spiketimes = np.zeros([len(neurons),np.int((endtime-starttime)/binsize)])
+    spiketimes = np.zeros([len(neurons),int((endtime-starttime)/binsize)])
 
     for i,cell in enumerate(neurons):
         edges = np.arange(starttime,endtime+binsize,binsize)
@@ -334,7 +334,7 @@ def check_continuity(nrnlist,starttime=0,endtime=12*3600,binsize=3600,fs = 25000
     plt.ylabel('Cell Number')
     plt.show()
 
-    nrows = np.int(np.ceil(nrncount/3))
+    nrows = int(np.ceil(nrncount/3))
     fig,ax = plt.subplots(nrows,3,figsize=(3*nrows,7),sharex=True)
     ax = ax.ravel()
 
@@ -401,7 +401,7 @@ def plot_raster(nrns,starttime,endtime,savefig=0,filename=''):
 
 def bin_spikes(neurons,binsize,starttime=0,endtime=13*3600,fs=25000):
 
-    spiketimes = np.zeros([len(neurons),np.int((endtime-starttime)/binsize)])
+    spiketimes = np.zeros([len(neurons),int((endtime-starttime)/binsize)])
 
     for i,cell in enumerate(neurons):
         edges = np.arange(starttime,endtime+(binsize*0.9),binsize)
@@ -918,8 +918,8 @@ def ccg_pair(nrn1,nrn2,dt=1e-3,tspan=0.05,nsegs=3000,return_plot=True,return_ccg
     subset2      = np.where(subset2)[1]
     # check to see if nsegs is user provided or default
     if nsegs is None:
-        nsegs1  = np.int(np.ceil(np.max(stimes1/120)))
-        nsegs2  = np.int(np.ceil(np.max(stimes2/120)))
+        nsegs1  = int(np.ceil(np.max(stimes1/120)))
+        nsegs2  = int(np.ceil(np.max(stimes2/120)))
         nsegs   = max(nsegs1,nsegs2)
     print('\tUsing {:d} segments.'.format(nsegs))
     # Take a subset of indices. We want "nsegs" elements, evenly spaced. "segindx" therefore contains nsegs spike indices, evenly spaced between the first and last one in subset
@@ -1002,8 +1002,8 @@ def ccg_tseries(stimes1,stimes2,dt=1e-3,tspan=0.05,nsegs=3000,return_plot=True,r
     subset2      = np.where(subset2)[1]
     # check to see if nsegs is user provided or default
     if nsegs is None:
-        nsegs1  = np.int(np.ceil(np.max(stimes1/120)))
-        nsegs2  = np.int(np.ceil(np.max(stimes2/120)))
+        nsegs1  = int(np.ceil(np.max(stimes1/120)))
+        nsegs2  = int(np.ceil(np.max(stimes2/120)))
         nsegs   = max(nsegs1,nsegs2)
     print('\tUsing {:d} segments.'.format(nsegs))
     # Take a subset of indices. We want "nsegs" elements, evenly spaced. "segindx" therefore contains nsegs spike indices, evenly spaced between the first and last one in subset
